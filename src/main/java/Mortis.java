@@ -22,6 +22,13 @@ public class Mortis {
                 System.out.println("     Farewell, traveler. Mortis shall await your return...");
                 System.out.println("    ____________________________________________________________");
                 break;
+            } else if (input.equals("list")) {
+                System.out.println("    ____________________________________________________________");
+                System.out.println("     Mortis’ records of your tasks:");
+                for (int i = 0; i < taskCount; i++) {
+                    System.out.println("     " + (i+1) + ". " + tasks[i]);
+                }
+                System.out.println("    ____________________________________________________________");
             } else {
                 System.out.println("    ____________________________________________________________");
                 System.out.println("     Mortis notes your tasks: " + input); // To echo input
