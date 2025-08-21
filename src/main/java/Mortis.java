@@ -49,12 +49,39 @@ public class Mortis {
                     System.out.println("       [ ] " + tasks[taskId].getDescription());
                     System.out.println("    ____________________________________________________________");
                 }
-            } else {
-                System.out.println("    ____________________________________________________________");
-                System.out.println("     Mortis notes your tasks: " + input); // To echo input
-                System.out.println("    ____________________________________________________________");
-                tasks[taskCount] = new Task(input);
+            } else if (input.startsWith("todo")) {
+                String taskDescription = input.substring(5); // Extract description
+                tasks[taskCount] = new Todo(taskDescription);
                 taskCount ++;
+                System.out.println("    ____________________________________________________________");
+                System.out.println("     Mortis notes your tasks:");
+                System.out.println("       " + tasks[taskCount - 1].toString());
+                System.out.println("     Now you have " + taskCount + " tasks in the list.");
+                System.out.println("    ____________________________________________________________");
+            } else if (input.startsWith("deadline")) {
+                String[] parts = input.split(" /by ");
+                String taskDescription = parts[0].substring(9); // Extract description
+                String deadline = parts[1]; // Extract deadline time
+                tasks[taskCount] = new Deadline(taskDescription, deadline);
+                taskCount++;
+                System.out.println("    ____________________________________________________________");
+                System.out.println("     Mortis notes your tasks:");
+                System.out.println("       " + tasks[taskCount - 1].toString());
+                System.out.println("     Now you have " + taskCount + " tasks in the list.");
+                System.out.println("    ____________________________________________________________");
+            } else if (input.startsWith("event")) {
+                String[] parts = input.split(" /from ");
+                String taskDescription = parts[0].substring(6); // Extract description
+                String[] timeParts = parts[1].split(" /to");
+                String fromTime = timeParts[0]; // Extract start time
+                String toTime = timeParts[1]; // Extract end time
+                tasks[taskCount] = new Event(taskDescription, fromTime, toTime);
+                taskCount++;
+                System.out.println("    ____________________________________________________________");
+                System.out.println("     Mortis notes your tasks:");
+                System.out.println("       " + tasks[taskCount - 1].toString());
+                System.out.println("     Now you have " + taskCount + " tasks in the list.");
+                System.out.println("    ____________________________________________________________");
             }
         }
 
