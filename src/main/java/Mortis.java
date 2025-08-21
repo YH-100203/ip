@@ -27,7 +27,7 @@ public class Mortis {
                 System.out.println("     Mortis’ records of your tasks:");
                 for (int i = 0; i < taskCount; i++) {
                     Task target = tasks[i];
-                    System.out.println("     " + (i+1) + ".[" + target.getStatusIcon() + "] " + target.getDescription());
+                    System.out.println("     " + (i+1) + "." + tasks[i].toString());
                 }
                 System.out.println("    ____________________________________________________________");
             } else if (input.startsWith("mark")) { // Usage of startsWith to get keyword
