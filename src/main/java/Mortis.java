@@ -13,12 +13,19 @@ public class Mortis {
         while (true) {
             // Standard code for input
             String input = sc.nextLine();
-            System.out.println("    ____________________________________________________________");
-            System.out.println("     " + input); // To echo input
-            System.out.println("    ____________________________________________________________");
-            break;
 
+            if (input.equals("bye")) {
+                System.out.println("    ____________________________________________________________");
+                System.out.println("     Bye. Hope to see you again soon!");
+                System.out.println("    ____________________________________________________________");
+                break;
+            } else {
+                System.out.println("    ____________________________________________________________");
+                System.out.println("     " + input); // To echo input
+                System.out.println("    ____________________________________________________________");
+            }
         }
 
+        sc.close();
     }
 }
