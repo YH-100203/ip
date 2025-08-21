@@ -46,7 +46,7 @@ public class Mortis {
                     tasks[taskId].unmark();
                     System.out.println("    ____________________________________________________________");
                     System.out.println("     OK... I've pulled the task back from the abyss. It is undone now:");
-                    System.out.println("       [ ] " + tasks[taskId].getDescription());
+                    System.out.println("       " + tasks[taskCount - 1].toString());
                     System.out.println("    ____________________________________________________________");
                 }
             } else if (input.startsWith("todo")) {
