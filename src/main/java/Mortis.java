@@ -4,8 +4,8 @@ public class Mortis {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         System.out.println("____________________________________________________________");
-        System.out.println(" Hello! I'm Mortis");
-        System.out.println(" What can I do for you?");
+        System.out.println(" Greetings, mortal. I am Mortis, your eternal assistant.");
+        System.out.println(" What dark secret may I help you uncover today?");
         System.out.println("____________________________________________________________");
 
 
@@ -16,12 +16,12 @@ public class Mortis {
 
             if (input.equals("bye")) {
                 System.out.println("    ____________________________________________________________");
-                System.out.println("     Bye. Hope to see you again soon!");
+                System.out.println("     Farewell, traveler. Mortis shall await your return...");
                 System.out.println("    ____________________________________________________________");
                 break;
             } else {
                 System.out.println("    ____________________________________________________________");
-                System.out.println("     " + input); // To echo input
+                System.out.println("     Mortis repeats your words: " + input); // To echo input
                 System.out.println("    ____________________________________________________________");
             }
         }
