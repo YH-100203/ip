@@ -9,7 +9,7 @@ public class Mortis {
         System.out.println("____________________________________________________________");
 
         // Task list to store user input
-        String[] tasks = new String[100]; // Task list to store user input
+        Task[] tasks = new Task[100]; // Task list to store user input
         int taskCount = 0;
 
         // Echo loop
@@ -26,14 +26,15 @@ public class Mortis {
                 System.out.println("    ____________________________________________________________");
                 System.out.println("     Mortis’ records of your tasks:");
                 for (int i = 0; i < taskCount; i++) {
-                    System.out.println("     " + (i+1) + ". " + tasks[i]);
+                    Task target = tasks[i];
+                    System.out.println("     " + (i+1) + ".[" + target.getStatusIcon() + "] " + target.getDescription());
                 }
                 System.out.println("    ____________________________________________________________");
             } else {
                 System.out.println("    ____________________________________________________________");
                 System.out.println("     Mortis notes your tasks: " + input); // To echo input
                 System.out.println("    ____________________________________________________________");
-                tasks[taskCount] = input;
+                tasks[taskCount] = new Task(input);
                 taskCount ++;
             }
         }
