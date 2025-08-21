@@ -8,6 +8,9 @@ public class Mortis {
         System.out.println(" What dark secret may I help you uncover today?");
         System.out.println("____________________________________________________________");
 
+        // Task list to store user input
+        String[] tasks = new String[100]; // Task list to store user input
+        int taskCount = 0;
 
         // Echo loop
         while (true) {
@@ -21,8 +24,10 @@ public class Mortis {
                 break;
             } else {
                 System.out.println("    ____________________________________________________________");
-                System.out.println("     Mortis repeats your words: " + input); // To echo input
+                System.out.println("     Mortis notes your tasks: " + input); // To echo input
                 System.out.println("    ____________________________________________________________");
+                tasks[taskCount] = input;
+                taskCount ++;
             }
         }
 
