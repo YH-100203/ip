@@ -30,6 +30,25 @@ public class Mortis {
                     System.out.println("     " + (i+1) + ".[" + target.getStatusIcon() + "] " + target.getDescription());
                 }
                 System.out.println("    ____________________________________________________________");
+            } else if (input.startsWith("mark")) { // Usage of startsWith to get keyword
+                int taskId = Integer.parseInt(input.split(" ")[1]) - 1; // Get task ID
+                if (taskId >= 0 && taskId < taskCount) {
+                    tasks[taskId].markAsDone();
+                    System.out.println("    ____________________________________________________________");
+                    System.out.println("     Ah... the task is now done. The darkness has claimed it:");
+                    System.out.println("       [X] " + tasks[taskId].getDescription());
+                    System.out.println("    ____________________________________________________________");
+                }
+            } else if (input.startsWith("unmark")) {
+                // Unmark task as not done
+                int taskId = Integer.parseInt(input.split(" ")[1]) - 1; // Get task ID
+                if (taskId >= 0 && taskId < taskCount) {
+                    tasks[taskId].unmark();
+                    System.out.println("    ____________________________________________________________");
+                    System.out.println("     OK... I've pulled the task back from the abyss. It is undone now:");
+                    System.out.println("       [ ] " + tasks[taskId].getDescription());
+                    System.out.println("    ____________________________________________________________");
+                }
             } else {
                 System.out.println("    ____________________________________________________________");
                 System.out.println("     Mortis notes your tasks: " + input); // To echo input
