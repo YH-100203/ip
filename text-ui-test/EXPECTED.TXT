@@ -1,7 +1,65 @@
-Hello from
- ____        _        
-|  _ \ _   _| | _____ 
-| | | | | | | |/ / _ \
-| |_| | |_| |   <  __/
-|____/ \__,_|_|\_\___|
-
+____________________________________________________________
+ Greetings, mortal. I am Mortis, your eternal assistant.
+ What dark secret may I help you uncover today?
+____________________________________________________________
+    ____________________________________________________________
+     Mortis notes your tasks:
+       [T][ ] borrow book
+     Now you have 1 tasks in the list.
+    ____________________________________________________________
+    ____________________________________________________________
+     Mortis notes your tasks:
+       [T][ ] read book
+     Now you have 2 tasks in the list.
+    ____________________________________________________________
+    ____________________________________________________________
+     Mortis’ records of your tasks:
+     1.[T][ ] borrow book
+     2.[T][ ] read book
+    ____________________________________________________________
+    ____________________________________________________________
+     Mortis notes your tasks:
+       [D][ ] return book (by: Sunday)
+     Now you have 3 tasks in the list.
+    ____________________________________________________________
+    ____________________________________________________________
+     Mortis notes your tasks:
+       [E][ ] project meeting (from: Mon 2pm to: 4pm)
+     Now you have 4 tasks in the list.
+    ____________________________________________________________
+    ____________________________________________________________
+     Mortis’ records of your tasks:
+     1.[T][ ] borrow book
+     2.[T][ ] read book
+     3.[D][ ] return book (by: Sunday)
+     4.[E][ ] project meeting (from: Mon 2pm to: 4pm)
+    ____________________________________________________________
+    ____________________________________________________________
+     Ah... the task is now done. The darkness has claimed it:
+       [X] borrow book
+    ____________________________________________________________
+    ____________________________________________________________
+     Ah... the task is now done. The darkness has claimed it:
+       [X] read book
+    ____________________________________________________________
+    ____________________________________________________________
+     Mortis’ records of your tasks:
+     1.[T][X] borrow book
+     2.[T][X] read book
+     3.[D][ ] return book (by: Sunday)
+     4.[E][ ] project meeting (from: Mon 2pm to: 4pm)
+    ____________________________________________________________
+    ____________________________________________________________
+     OK... I've pulled the task back from the abyss. It is undone now:
+       [E][ ] project meeting (from: Mon 2pm to: 4pm)
+    ____________________________________________________________
+    ____________________________________________________________
+     Mortis’ records of your tasks:
+     1.[T][ ] borrow book
+     2.[T][X] read book
+     3.[D][ ] return book (by: Sunday)
+     4.[E][ ] project meeting (from: Mon 2pm to: 4pm)
+    ____________________________________________________________
+    ____________________________________________________________
+     Farewell, traveler. Mortis shall await your return...
+    ____________________________________________________________
