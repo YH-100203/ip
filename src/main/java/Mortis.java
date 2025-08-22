@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Mortis {
@@ -8,9 +9,8 @@ public class Mortis {
         System.out.println(" What dark secret may I help you uncover today?");
         System.out.println("____________________________________________________________");
 
-        // Task list to store user input
-        Task[] tasks = new Task[100]; // Task list to store user input
-        int taskCount = 0;
+        // Use ArrayList to store tasks (instead of fixed-size array)
+        ArrayList<Task> tasks = new ArrayList<>();
 
         // Echo loop
         while (true) {
@@ -24,9 +24,13 @@ public class Mortis {
                     break;
                 } else if (input.equals("list")) {
                     System.out.println("    ____________________________________________________________");
-                    System.out.println("     Mortis’ records of your tasks:");
-                    for (int i = 0; i < taskCount; i++) {
-                        System.out.println("     " + (i + 1) + "." + tasks[i].toString());
+                    if (tasks.isEmpty()) {
+                        System.out.println("     Mortis has not yet received any tasks... *sadness*");
+                    } else {
+                        System.out.println("     Mortis’ records of your tasks:");
+                        for (int i = 0; i < tasks.size(); i++) {
+                            System.out.println("     " + (i + 1) + "." + tasks.get(i).toString());
+                        }
                     }
                     System.out.println("    ____________________________________________________________");
                 } else if (input.startsWith("mark")) { // Usage of startsWith to get keyword
@@ -35,40 +39,54 @@ public class Mortis {
                     if (parts.length < 2) {
                         throw new MortisException("You must provide a task number to mark.");
                     }
-                    if (taskId < 0 || taskId >= taskCount) {
+                    if (taskId < 0 || taskId >= tasks.size()) {
                         throw new MortisException("That task does not exist, mortal.");
                     }
-                    tasks[taskId].markAsDone();
+                    tasks.get(taskId).markAsDone();
                     System.out.println("    ____________________________________________________________");
                     System.out.println("     Ah... the task is now done. The darkness has claimed it:");
-                    System.out.println("       [X] " + tasks[taskId].getDescription());
+                    System.out.println("       " + tasks.get(taskId).toString());
                     System.out.println("    ____________________________________________________________");
                 } else if (input.startsWith("unmark")) {
                     // Unmark task as not done
                     int taskId = Integer.parseInt(input.split(" ")[1]) - 1; // Get task ID
                     String[] parts = input.split(" ");
                     if (parts.length < 2) {
-                        throw new MortisException("You must provide a task number to mark.");
+                        throw new MortisException("You must provide a task number to unmark.");
                     }
-                    if (taskId < 0 || taskId >= taskCount) {
+                    if (taskId < 0 || taskId >= tasks.size()) {
                         throw new MortisException("That task does not exist, mortal.");
                     }
-                    tasks[taskId].unmark();
+                    tasks.get(taskId).unmark();
                     System.out.println("    ____________________________________________________________");
                     System.out.println("     OK... I've pulled the task back from the abyss. It is undone now:");
-                    System.out.println("       " + tasks[taskCount - 1].toString());
+                    System.out.println("       " + tasks.get(taskId).toString());
+                    System.out.println("    ____________________________________________________________");
+                } else if (input.startsWith("delete")) {
+                    int taskId = Integer.parseInt(input.split(" ")[1]) - 1; // Get task ID
+                    String[] parts = input.split(" ");
+                    if (parts.length < 2) {
+                        throw new MortisException("You must provide a task number to delete.");
+                    }
+                    if (taskId < 0 || taskId >= tasks.size()) {
+                        throw new MortisException("That task does not exist, mortal.");
+                    }
+                    Task deletedTask = tasks.remove(taskId);
+                    System.out.println("    ____________________________________________________________");
+                    System.out.println("     Noted. I've removed this task from the abyss");
+                    System.out.println("       " + deletedTask.toString());
+                    System.out.println("     Now you have " + tasks.size() + " tasks in the list.");
                     System.out.println("    ____________________________________________________________");
                 } else if (input.startsWith("todo")) {
                     String taskDescription = input.substring(5); // Extract description
                     if (taskDescription.isEmpty()) {
                         throw new MortisException("The description of a todo cannot be empty.");
                     }
-                    tasks[taskCount] = new Todo(taskDescription);
-                    taskCount++;
+                    tasks.add(new Todo(taskDescription));
                     System.out.println("    ____________________________________________________________");
                     System.out.println("     Mortis notes your tasks:");
-                    System.out.println("       " + tasks[taskCount - 1].toString());
-                    System.out.println("     Now you have " + taskCount + " tasks in the list.");
+                    System.out.println("       " + tasks.get(tasks.size() - 1).toString());
+                    System.out.println("     Now you have " + tasks.size() + " tasks in the list.");
                     System.out.println("    ____________________________________________________________");
                 } else if (input.startsWith("deadline")) {
                     String[] parts = input.split(" /by ");
@@ -80,12 +98,11 @@ public class Mortis {
                         throw new MortisException("Deadline description cannot be empty.");
                     }
                     String deadline = parts[1]; // Extract deadline time
-                    tasks[taskCount] = new Deadline(taskDescription, deadline);
-                    taskCount++;
+                    tasks.add(new Deadline(taskDescription, deadline));
                     System.out.println("    ____________________________________________________________");
                     System.out.println("     Mortis notes your tasks:");
-                    System.out.println("       " + tasks[taskCount - 1].toString());
-                    System.out.println("     Now you have " + taskCount + " tasks in the list.");
+                    System.out.println("       " + tasks.get(tasks.size() - 1).toString());
+                    System.out.println("     Now you have " + tasks.size() + " tasks in the list.");
                     System.out.println("    ____________________________________________________________");
                 } else if (input.startsWith("event")) {
                     String[] parts = input.split(" /from ");
@@ -102,12 +119,11 @@ public class Mortis {
                     }
                     String fromTime = timeParts[0]; // Extract start time
                     String toTime = timeParts[1]; // Extract end time
-                    tasks[taskCount] = new Event(taskDescription, fromTime, toTime);
-                    taskCount++;
+                    tasks.add(new Event(taskDescription, fromTime, toTime));
                     System.out.println("    ____________________________________________________________");
                     System.out.println("     Mortis notes your tasks:");
-                    System.out.println("       " + tasks[taskCount - 1].toString());
-                    System.out.println("     Now you have " + taskCount + " tasks in the list.");
+                    System.out.println("       " + tasks.get(tasks.size() - 1).toString());
+                    System.out.println("     Now you have " + tasks.size()+ " tasks in the list.");
                     System.out.println("    ____________________________________________________________");
                 } else {
                     throw new MortisException("I know not what you mean... try again, mortal.");
