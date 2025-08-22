@@ -60,6 +60,9 @@ public class Mortis {
                     System.out.println("    ____________________________________________________________");
                 } else if (input.startsWith("todo")) {
                     String taskDescription = input.substring(5); // Extract description
+                    if (taskDescription.isEmpty()) {
+                        throw new MortisException("The description of a todo cannot be empty.");
+                    }
                     tasks[taskCount] = new Todo(taskDescription);
                     taskCount++;
                     System.out.println("    ____________________________________________________________");
@@ -69,7 +72,13 @@ public class Mortis {
                     System.out.println("    ____________________________________________________________");
                 } else if (input.startsWith("deadline")) {
                     String[] parts = input.split(" /by ");
+                    if (parts.length < 2) {
+                        throw new MortisException("Deadline must include a /by clause.");
+                    }
                     String taskDescription = parts[0].substring(9); // Extract description
+                    if (taskDescription.isEmpty()) {
+                        throw new MortisException("Deadline description cannot be empty.");
+                    }
                     String deadline = parts[1]; // Extract deadline time
                     tasks[taskCount] = new Deadline(taskDescription, deadline);
                     taskCount++;
@@ -80,8 +89,17 @@ public class Mortis {
                     System.out.println("    ____________________________________________________________");
                 } else if (input.startsWith("event")) {
                     String[] parts = input.split(" /from ");
+                    if (parts.length < 2) {
+                        throw new MortisException("Event must include a /from time.");
+                    }
                     String taskDescription = parts[0].substring(6); // Extract description
+                    if (taskDescription.isEmpty()) {
+                        throw new MortisException("Event description cannot be empty.");
+                    }
                     String[] timeParts = parts[1].split(" /to");
+                    if (timeParts.length < 2) {
+                        throw new MortisException("Event must include a /to time.");
+                    }
                     String fromTime = timeParts[0]; // Extract start time
                     String toTime = timeParts[1]; // Extract end time
                     tasks[taskCount] = new Event(taskDescription, fromTime, toTime);
@@ -91,6 +109,8 @@ public class Mortis {
                     System.out.println("       " + tasks[taskCount - 1].toString());
                     System.out.println("     Now you have " + taskCount + " tasks in the list.");
                     System.out.println("    ____________________________________________________________");
+                } else {
+                    throw new MortisException("I know not what you mean... try again, mortal.");
                 }
             } catch (MortisException e) {
                 System.out.println("    ____________________________________________________________");
