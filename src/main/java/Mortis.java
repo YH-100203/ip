@@ -99,7 +99,7 @@ public class Mortis {
                     if (parts.length < 2) {
                         throw new MortisException("Deadline must include a /by clause.");
                     }
-                    String taskDescription = parts[0].substring(9).trim(); // Extract description
+                    String taskDescription = parts[0].substring(9); // Extract description
                     if (taskDescription.isEmpty()) {
                         throw new MortisException("Deadline description cannot be empty.");
                     }
@@ -130,7 +130,7 @@ public class Mortis {
                     System.out.println("    ____________________________________________________________");
                     System.out.println("     Mortis notes your tasks:");
                     System.out.println("       " + tasks.get(tasks.size() - 1).toString());
-                    System.out.println("     Now you have " + tasks.size()+ " tasks in the list.");
+                    System.out.println("     Now you have " + tasks.size() + " tasks in the list.");
                     System.out.println("    ____________________________________________________________");
                     saveTasksToFile(tasks);
                 } else {
