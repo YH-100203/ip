@@ -130,7 +130,7 @@ public class Mortis {
                     System.out.println("    ____________________________________________________________");
                     System.out.println("     Mortis notes your tasks:");
                     System.out.println("       " + tasks.get(tasks.size() - 1).toString());
-                    System.out.println("     Now you have " + tasks.size()+ " tasks in the list.");
+                    System.out.println("     Now you have " + tasks.size() + " tasks in the list.");
                     System.out.println("    ____________________________________________________________");
                     saveTasksToFile(tasks);
                 } else {
