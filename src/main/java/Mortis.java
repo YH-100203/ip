@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.nio.file.*;
+import java.io.*;
 
 public class Mortis {
     public static void main(String[] args) {
@@ -47,6 +49,7 @@ public class Mortis {
                     System.out.println("     Ah... the task is now done. The darkness has claimed it:");
                     System.out.println("       " + tasks.get(taskId).toString());
                     System.out.println("    ____________________________________________________________");
+                    saveTasksToFile(tasks);
                 } else if (input.startsWith("unmark")) {
                     // Unmark task as not done
                     int taskId = Integer.parseInt(input.split(" ")[1]) - 1; // Get task ID
@@ -62,6 +65,7 @@ public class Mortis {
                     System.out.println("     OK... I've pulled the task back from the abyss. It is undone now:");
                     System.out.println("       " + tasks.get(taskId).toString());
                     System.out.println("    ____________________________________________________________");
+                    saveTasksToFile(tasks);
                 } else if (input.startsWith("delete")) {
                     int taskId = Integer.parseInt(input.split(" ")[1]) - 1; // Get task ID
                     String[] parts = input.split(" ");
@@ -77,6 +81,7 @@ public class Mortis {
                     System.out.println("       " + deletedTask.toString());
                     System.out.println("     Now you have " + tasks.size() + " tasks in the list.");
                     System.out.println("    ____________________________________________________________");
+                    saveTasksToFile(tasks);
                 } else if (input.startsWith("todo")) {
                     String taskDescription = input.substring(5); // Extract description
                     if (taskDescription.isEmpty()) {
@@ -88,6 +93,7 @@ public class Mortis {
                     System.out.println("       " + tasks.get(tasks.size() - 1).toString());
                     System.out.println("     Now you have " + tasks.size() + " tasks in the list.");
                     System.out.println("    ____________________________________________________________");
+                    saveTasksToFile(tasks);
                 } else if (input.startsWith("deadline")) {
                     String[] parts = input.split(" /by ");
                     if (parts.length < 2) {
@@ -104,6 +110,7 @@ public class Mortis {
                     System.out.println("       " + tasks.get(tasks.size() - 1).toString());
                     System.out.println("     Now you have " + tasks.size() + " tasks in the list.");
                     System.out.println("    ____________________________________________________________");
+                    saveTasksToFile(tasks);
                 } else if (input.startsWith("event")) {
                     String[] parts = input.split(" /from ");
                     if (parts.length < 2) {
@@ -125,6 +132,7 @@ public class Mortis {
                     System.out.println("       " + tasks.get(tasks.size() - 1).toString());
                     System.out.println("     Now you have " + tasks.size()+ " tasks in the list.");
                     System.out.println("    ____________________________________________________________");
+                    saveTasksToFile(tasks);
                 } else {
                     throw new MortisException("I know not what you mean... try again, mortal.");
                 }
@@ -140,5 +148,35 @@ public class Mortis {
         }
 
         sc.close();
+    }
+
+    // Method to save tasks to file
+    private static void saveTasksToFile(ArrayList<Task> tasks) {
+        try {
+            Path path = Paths.get("./data/duke.txt"); // Create a path object pointing to that path
+            Files.createDirectories(path.getParent());  // Ensure the directory exists, if not create it
+            BufferedWriter writer = Files.newBufferedWriter(path); // Creates a buffered writer for writing to file
+
+            for (Task task : tasks) {
+                // Handling each type of event
+                // Can also just use task.toString() but will be different format
+                if (task instanceof Todo) {
+                    writer.write("T | " + (task.isDone ? "1" : "0") + " | " + task.getDescription() + "\n");
+                } else if (task instanceof Deadline) {
+                    writer.write("D | " + (task.isDone ? "1" : "0") + " | " + task.getDescription() + " | " + ((Deadline) task).by + "\n");
+                } else if (task instanceof Event) {
+                    writer.write("E | " + (task.isDone ? "1" : "0") + " | " + task.getDescription() + " | " + ((Event) task).from + " | " + ((Event) task).to + "\n");
+                }
+            }
+
+            writer.close();
+        } catch (IOException e) {
+            // If any IOException occurs during the file handling process
+            // (e.g., if the file is not writable or if there's an issue with the file system),
+            // the program will catch the exception and print an error message.
+            System.out.println("    ____________________________________________________________");
+            System.out.println("     An error occurred while saving the task data.");
+            System.out.println("    ____________________________________________________________");
+        }
     }
 }
