@@ -7,14 +7,20 @@ public class Deadline extends Task {
 
     public Deadline(String description, String by) {
         super(description);
-        LocalDate d1 = LocalDate.parse(by);
-        this.by = d1.format(DateTimeFormatter.ofPattern("MMM d yyyy"));
+        this.by = by;
     }
 
-
+    public String getFormattedDate() {
+        try {
+            LocalDate d1 = LocalDate.parse(this.by);
+            return d1.format(DateTimeFormatter.ofPattern("MMM d yyyy"));
+        } catch (Exception e) {
+            return this.by;
+        }
+    }
 
     @Override
     public String toString() {
-        return "[D]" + super.toString() + " (by: " + by + ")";
+        return "[D]" + super.toString() + " (by: " + getFormattedDate() + ")";
     }
 }

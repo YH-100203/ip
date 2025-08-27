@@ -99,7 +99,7 @@ public class Mortis {
                     if (parts.length < 2) {
                         throw new MortisException("Deadline must include a /by clause.");
                     }
-                    String taskDescription = parts[0].substring(9); // Extract description
+                    String taskDescription = parts[0].substring(9).trim(); // Extract description
                     if (taskDescription.isEmpty()) {
                         throw new MortisException("Deadline description cannot be empty.");
                     }
