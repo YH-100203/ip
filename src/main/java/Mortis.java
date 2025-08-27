@@ -12,7 +12,7 @@ public class Mortis {
         System.out.println("____________________________________________________________");
 
         // Use ArrayList to store tasks (instead of fixed-size array)
-        ArrayList<Task> tasks = new ArrayList<>();
+        ArrayList<Task> tasks = loadTasksFromFile();
 
         // Echo loop
         while (true) {
@@ -178,5 +178,46 @@ public class Mortis {
             System.out.println("     An error occurred while saving the task data.");
             System.out.println("    ____________________________________________________________");
         }
+    }
+
+    // Method to load tasks from file
+    private static ArrayList<Task> loadTasksFromFile() {
+        ArrayList<Task> tasks = new ArrayList<>();
+        try {
+            Path path = Paths.get("./data/duke.txt");
+
+            if (Files.exists(path)) {
+                BufferedReader reader = Files.newBufferedReader(path); // creates a Buffered reader to read the contents
+                String line; // Used to store each line read from the file
+
+                while ((line = reader.readLine()) != null) { // Reads the file line by line until there are no more lines
+                    String[] parts = line.split(" \\| ");
+                    if (parts.length < 3) continue;  // Skip malformed lines
+
+                    // processing the tasks and repopulating the tasks array
+                    String taskType = parts[0];
+                    boolean isDone = parts[1].equals("1");
+                    String description = parts[2];
+
+                    if (taskType.equals("T")) {
+                        tasks.add(new Todo(description));
+                    } else if (taskType.equals("D")) {
+                        String by = parts[3];
+                        tasks.add(new Deadline(description, by));
+                    } else if (taskType.equals("E")) {
+                        String from = parts[3];
+                        String to = parts[4];
+                        tasks.add(new Event(description, from, to));
+                    }
+                }
+                reader.close();
+            }
+        } catch (IOException e) {
+            System.out.println("    ____________________________________________________________");
+            System.out.println("     Error loading task data.");
+            System.out.println("    ____________________________________________________________");
+        }
+
+        return tasks;
     }
 }
