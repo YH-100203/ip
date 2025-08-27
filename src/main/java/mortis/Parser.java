@@ -1,3 +1,5 @@
+package mortis;
+
 public class Parser {
 
     public static boolean isBye(String input) {
