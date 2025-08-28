@@ -8,13 +8,29 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
+/**
+ * Handles the loading and saving of tasks to and from a file.
+ * It manages file operations such as creating directories, reading and writing data, and handling errors.
+ */
 public class Storage {
     private final Path path;
 
+    /**
+     * Constructs a Storage object that handles file operations at the specified path.
+     *
+     * @param filePath The path to the file where task data will be stored or retrieved.
+     */
     public Storage(String filePath) {
         this.path = Paths.get(filePath);
     }
 
+    /**
+     * Loads tasks from the file specified by the path.
+     * If the file does not exist, a new file will be created.
+     *
+     * @return A list of tasks loaded from the file.
+     * @throws MortisException If an error occurs while loading tasks from the file.
+     */
     public ArrayList<Task> load() throws MortisException {
         ArrayList<Task> tasks = new ArrayList<>();
         try {
@@ -64,6 +80,11 @@ public class Storage {
         return tasks;
     }
 
+    /**
+     * Saves the given list of tasks to the file.
+     *
+     * @param list The list of tasks to be saved to the file.
+     */
     public void save(TaskList list) {
         try {
             if (path.getParent() != null) {
