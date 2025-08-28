@@ -1,11 +1,20 @@
 package mortis;
 
+/**
+ * Main class for running the Duke application.
+ * Responsible for initializing the storage, task list, and UI, and running the application loop.
+ */
 public class Mortis {
 
     private final Ui ui;
     private final Storage storage;
     private final TaskList tasks;
 
+    /**
+     * Constructs a Mortis instance with the specified file path.
+     *
+     * @param filePath The path to the file to load/save tasks.
+     */
     public Mortis(String filePath) {
         this.ui = new Ui();
         this.storage = new Storage(filePath);
@@ -19,6 +28,9 @@ public class Mortis {
         this.tasks = loaded;
     }
 
+    /**
+     * Starts the application by running the main loop.
+     */
     public void run() {
         ui.showWelcome();
         boolean exit = false;
@@ -69,6 +81,12 @@ public class Mortis {
         }
     }
 
+
+    /**
+     * Main method to run the application.
+     *
+     * @param args Command-line arguments (not used in this version).
+     */
     public static void main(String[] args) {
         // Keep relative, cross-OS safe path
         new Mortis("data/duke.txt").run();

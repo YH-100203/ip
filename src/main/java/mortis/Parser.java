@@ -1,5 +1,9 @@
 package mortis;
 
+/**
+ * Parses user commands into executable commands.
+ * Converts user input into an appropriate Command object.
+ */
 public class Parser {
 
     public static boolean isBye(String input) {

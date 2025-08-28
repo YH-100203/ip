@@ -2,9 +2,16 @@ package mortis;
 
 import java.util.Scanner;
 
+/**
+ * Handles the interaction with the user via the console.
+ * It displays messages to the user and reads input from the user.
+ */
 public class Ui {
     private final Scanner sc = new Scanner(System.in);
 
+    /**
+     * Displays a welcome message to the user.
+     */
     public void showWelcome() {
         System.out.println("____________________________________________________________");
         System.out.println(" Greetings, mortal. I am Mortis, your eternal assistant.");
@@ -12,16 +19,28 @@ public class Ui {
         System.out.println("____________________________________________________________");
     }
 
+    /**
+     * Displays a line separator.
+     */
     public void showLine() {
         System.out.println("    ____________________________________________________________");
     }
 
+
+    /**
+     * Displays an error message if loading tasks fails.
+     */
     public void showError(String message) {
         showLine();
         System.out.println("     " + message);
         showLine();
     }
 
+    /**
+     * Reads the command input by the user
+     *
+     * @return the full command entered by the user
+     */
     public String readCommand() {
         return sc.nextLine();
     }
