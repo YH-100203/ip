@@ -72,7 +72,15 @@ public class Mortis {
                     Task added = tasks.add(new Event(p[0], p[1], p[2]));
                     storage.save(tasks);
                     ui.showAdd(added, tasks.size());
-                } else {
+                } else if (input.startsWith("find")) {
+                    String keyword = input.substring(5).trim();
+                    if (!keyword.isEmpty()) {
+                        Parser.parseFind("find " + keyword, tasks, ui);
+                    } else {
+                        ui.showError("Provide a keyword for me to seek.");
+                    }
+                }
+                else {
                     throw new MortisException("I know not what you mean... try again, mortal.");
                 }
             } catch (MortisException e) {

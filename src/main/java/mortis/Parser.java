@@ -1,9 +1,7 @@
 package mortis;
 
-/**
- * Parses user commands into executable commands.
- * Converts user input into an appropriate Command object.
- */
+import java.util.ArrayList;
+
 public class Parser {
 
     public static boolean isBye(String input) {
@@ -80,6 +78,23 @@ public class Parser {
         String from = second[0].trim();
         String to = second[1].trim();
         return new String[]{desc, from, to};
+    }
+
+    public static void parseFind(String fullCommand, TaskList tasks, Ui ui) {
+        // Split the command into its action word and the keyword for finding tasks
+        String[] commandParts = fullCommand.split(" ", 2);
+        String commandWord = commandParts[0].toLowerCase();
+
+        // If the command is 'find', we execute the find logic
+        if ("find".equals(commandWord) && commandParts.length > 1) {
+            String keyword = commandParts[1];  // Extract the search keyword
+            // Find tasks and display them
+            ArrayList<Task> matches = tasks.find(keyword);
+            ui.showFoundTasks(matches);  // Display the tasks found
+        } else {
+            // Handle other commands if needed (e.g., 'add', 'delete')
+            System.out.println("Unknown or invalid command.");
+        }
     }
 }
 
