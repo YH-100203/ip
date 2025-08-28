@@ -1,5 +1,6 @@
 package mortis;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Ui {
@@ -72,6 +73,19 @@ public class Ui {
     public void showBye() {
         showLine();
         System.out.println("     Farewell, traveler. Mortis shall await your return...");
+        showLine();
+    }
+
+    public void showFoundTasks(ArrayList<Task> matches) {
+        showLine();
+        if (matches.isEmpty()) {
+            System.out.println("     No matching tasks found.");
+        } else {
+            System.out.println("     Here are the matching tasks found mortal:");
+            for (int i = 0; i < matches.size(); i++) {
+                System.out.println("     " + (i+1) + ". " + matches.get(i).toString());
+            }
+        }
         showLine();
     }
 }
