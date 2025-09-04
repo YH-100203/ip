@@ -1,4 +1,6 @@
 package mortis;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Main class for running the Duke application.
@@ -26,6 +28,106 @@ public class Mortis {
             loaded = new TaskList();
         }
         this.tasks = loaded;
+    }
+
+    public String getResponse(String rawInput) {
+        final String input = (rawInput == null ? "" : rawInput.trim());
+        try {
+            if (Parser.isBye(input)) {
+                storage.save(tasks);
+                return "Farewell. Mortis slumbers...";
+            } else if (Parser.isList(input)) {
+                return formatTaskList();
+            } else if (input.startsWith("mark")) { // consider normalizing case
+                int idx = Parser.parseIndexAfter(input, "mark", tasks.size());
+                Task t = tasks.mark(idx);
+                storage.save(tasks);
+                return "Ah... the task is now done. The darkness has claimed it:\n  " + t;
+            } else if (input.startsWith("unmark")) { // consider normalizing case
+                int idx = Parser.parseIndexAfter(input, "unmark", tasks.size());
+                Task t = tasks.unmark(idx);
+                storage.save(tasks);
+                return "OK... I've pulled the task back from the abyss. It is undone now:\n  " + t; // no Markdown
+            } else if (input.startsWith("delete")) {
+                int idx = Parser.parseIndexAfter(input, "delete", tasks.size());
+                Task deleted = tasks.delete(idx);
+                storage.save(tasks);
+                return "Removed this task:\n  " + deleted + "\n"
+                        + "Now you have " + tasks.size() + " task" + (tasks.size() == 1 ? "" : "s") + " in the list.";
+            } else if (input.startsWith("todo")) {
+                String desc = Parser.parseTodoDesc(input);
+                Task added = tasks.add(new Todo(desc));
+                storage.save(tasks);
+                return "Added this task:\n  " + added + "\n"
+                        + "Now you have " + tasks.size() + " task" + (tasks.size() == 1 ? "" : "s") + " in the list.";
+            } else if (input.startsWith("deadline")) {
+                String[] p = Parser.parseDeadline(input); // [desc, by]
+                Task added = tasks.add(new Deadline(p[0], p[1]));
+                storage.save(tasks);
+                return "Added this task:\n  " + added + "\n"
+                        + "Now you have " + tasks.size() + " task" + (tasks.size() == 1 ? "" : "s") + " in the list.";
+            } else if (input.startsWith("event")) {
+                String[] p = Parser.parseEvent(input); // [desc, from, to]
+                Task added = tasks.add(new Event(p[0], p[1], p[2]));
+                storage.save(tasks);
+                return "Added this task:\n  " + added + "\n"
+                        + "Now you have " + tasks.size() + " task" + (tasks.size() == 1 ? "" : "s") + " in the list.";
+            } else if (input.startsWith("find")) {
+                String keyword = input.length() >= 5 ? input.substring(5).trim() : "";
+                if (keyword.isEmpty()) {
+                    throw new MortisException("Provide a keyword for me to seek.");
+                }
+                return formatFindResults(keyword);
+            } else {
+                throw new MortisException("I know not what you mean... try again, mortal.");
+            }
+        } catch (MortisException e) {
+            return e.getMessage();
+        } catch (Exception e) {
+            return (e.getMessage() != null && !e.getMessage().isBlank())
+                    ? e.getMessage()
+                    : ("Something went awry: " + e.getClass().getSimpleName());
+        }
+    }
+
+    private String formatTaskList() {
+        if (tasks.size() == 0) {
+            return "Mortis has not yet received any tasks.";
+        }
+        StringBuilder sb = new StringBuilder("Mortis’ records of your tasks:\n");
+        for (int i = 0; i < tasks.size(); i++) {
+            Task t = tasks.get(i);               // uses TaskList#get(int)
+            sb.append(i + 1).append(". ").append(t).append('\n');
+        }
+        return sb.toString().trim();
+    }
+
+    private String formatFindResults(String keyword) {
+        String needle = keyword.toLowerCase();
+
+        // Prefer a simple linear scan using TaskList#size and #get(int)
+        List<Task> matches = new ArrayList<>();
+        for (int i = 0; i < tasks.size(); i++) {
+            Task t = tasks.get(i);
+            // Use the dedicated accessor rather than toString() for matching
+            if (t.getDescription().toLowerCase().contains(needle)) {
+                matches.add(t);
+            }
+        }
+
+        if (matches.isEmpty()) {
+            return "No tasks match: \"" + keyword + "\"";
+        }
+        StringBuilder sb = new StringBuilder("Here are the matching tasks found mortal:\n");
+        for (int i = 0; i < matches.size(); i++) {
+            sb.append(i + 1).append(". ").append(matches.get(i)).append('\n');
+        }
+        return sb.toString().trim();
+    }
+
+    public boolean isExit(String input) {
+        // true when user typed "bye" (or your equivalent)
+        return Parser.isBye(input == null ? "" : input.trim());
     }
 
     /**
@@ -88,7 +190,6 @@ public class Mortis {
             }
         }
     }
-
 
     /**
      * Main method to run the application.
