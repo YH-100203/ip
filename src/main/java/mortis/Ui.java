@@ -4,9 +4,10 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- * Handles the interaction with the user via the console.
+ * Handles the interaction with the user via the CLI.
  * It displays messages to the user and reads input from the user.
  */
+
 public class Ui {
     private final Scanner sc = new Scanner(System.in);
 
