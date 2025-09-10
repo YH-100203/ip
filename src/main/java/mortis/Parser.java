@@ -3,6 +3,18 @@ package mortis;
 import java.util.ArrayList;
 
 public class Parser {
+    // Command literals (avoid magic strings)
+    private static final String CMD_BYE = "bye";
+    private static final String CMD_LIST = "list";
+    private static final String CMD_TODO = "todo";
+    private static final String CMD_DEADLINE = "deadline";
+    private static final String CMD_EVENT = "event";
+    private static final String CMD_FIND = "find";
+
+    // Delimiters
+    private static final String DELIM_BY = " /by ";
+    private static final String DELIM_FROM = " /from ";
+    private static final String DELIM_TO = " /to ";
 
     /**
      * Checks if the given input is the "bye" command.
@@ -11,7 +23,7 @@ public class Parser {
      * @return true if the input is "bye", false otherwise.
      */
     public static boolean isBye(String input) {
-        return input.equals("bye");
+        return input.equals(CMD_BYE);
     }
 
     /**
@@ -21,7 +33,7 @@ public class Parser {
      * @return true if the input is "list", false otherwise.
      */
     public static boolean isList(String input) {
-        return input.equals("list");
+        return input.equals(CMD_LIST);
     }
 
     /**
@@ -60,7 +72,7 @@ public class Parser {
      * @throws MortisException if the description is empty or the command is invalid.
      */
     public static String parseTodoDesc(String input) throws MortisException {
-        if (!input.startsWith("todo")) {
+        if (!input.startsWith(CMD_TODO)) {
             throw new MortisException("I know not what you mean... try again, mortal.");
         }
         String desc = (input.length() >= 5) ? input.substring(5).trim() : "";
@@ -81,10 +93,10 @@ public class Parser {
      */
     public static String[] parseDeadline(String input) throws MortisException {
         // "deadline <desc> /by <by>"
-        if (!input.startsWith("deadline")) {
+        if (!input.startsWith(CMD_DEADLINE)) {
             throw new MortisException("I know not what you mean... try again, mortal.");
         }
-        String[] parts = input.split(" /by ", 2);
+        String[] parts = input.split(DELIM_BY, 2);
         if (parts.length < 2) {
             throw new MortisException("Deadline must include a /by clause.");
         }
@@ -108,10 +120,10 @@ public class Parser {
      */
     public static String[] parseEvent(String input) throws MortisException {
         // "event <desc> /from <from> /to <to>"
-        if (!input.startsWith("event")) {
+        if (!input.startsWith(CMD_EVENT)) {
             throw new MortisException("I know not what you mean... try again, mortal.");
         }
-        String[] first = input.split(" /from ", 2);
+        String[] first = input.split(DELIM_FROM, 2);
         if (first.length < 2) {
             throw new MortisException("Event must include a /from time.");
         }
@@ -119,7 +131,7 @@ public class Parser {
         if (desc.isEmpty()) {
             throw new MortisException("Event description cannot be empty.");
         }
-        String[] second = first[1].split(" /to", 2);
+        String[] second = first[1].split(DELIM_TO, 2);
         if (second.length < 2) {
             throw new MortisException("Event must include a /to time.");
         }
@@ -143,7 +155,7 @@ public class Parser {
         String commandWord = commandParts[0].toLowerCase();
 
         // If the command is 'find', we execute the find logic
-        if ("find".equals(commandWord) && commandParts.length > 1) {
+        if (CMD_FIND.equals(commandWord) && commandParts.length > 1) {
             String keyword = commandParts[1];  // Extract the search keyword
             // Find tasks and display them
             ArrayList<Task> matches = tasks.find(keyword);

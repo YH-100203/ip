@@ -5,6 +5,7 @@ package mortis;
  * A simple task with a description and status (done or not)
  */
 public class Todo extends Task {
+    private static final String TODO_ICON = "[T]";
 
     /**
      * Creates a Todo task with a description.
@@ -24,8 +25,8 @@ public class Todo extends Task {
      */
     @Override
     public String toString() {
-        String s = "[T]" + super.toString();
-        assert s.startsWith("[T]") : "Todo toString must start with [T]";
+        String s = TODO_ICON + super.toString();
+        assert s.startsWith(TODO_ICON) : "Todo toString must start with [T]";
         return s;
     }
 }

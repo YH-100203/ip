@@ -6,6 +6,8 @@ package mortis;
  * Provides methods to mark the task as done or undone, get the status, and get the task description.
  */
 public class Task {
+    private static final String DONE_ICON = "X";
+    private static final String TODO_ICON = " ";
     protected String description;
     protected boolean isDone;
 
@@ -28,20 +30,16 @@ public class Task {
      * Marks the task as done.
      */
     public void markAsDone() {
-        boolean prev = isDone;
         isDone = true;
         assert isDone : "Task should be marked done after markAsDone()";
-        assert prev || isDone; // sanity: state moved towards done
     }
 
     /**
      * Unmarks the task, setting its status to undone.
      */
     public void unmark() {
-        boolean prev = isDone;
         isDone = false;
         assert !isDone : "Task should be not done after unmark()";
-        assert !prev || !isDone; // sanity: state moved towards not-done
     }
 
     /**
@@ -51,7 +49,7 @@ public class Task {
      * @return A string representing the task status icon.
      */
     public String getStatusIcon() {
-        return (isDone ? "X" : " "); // mark done task with X
+        return isDone ? DONE_ICON : TODO_ICON;
     }
 
     /**
@@ -75,6 +73,4 @@ public class Task {
         assert s != null && !s.isBlank() : "toString must return non-empty";
         return s;
     }
-
-
 }
