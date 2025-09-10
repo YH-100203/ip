@@ -48,6 +48,7 @@ public class Parser {
         if (idx < 0 || idx >= taskCount) {
             throw new MortisException("That task does not exist, mortal.");
         }
+        assert idx >= 1 && idx <= taskCount : "index out of bounds after parseIndexAfter";
         return idx;
     }
 
@@ -66,6 +67,8 @@ public class Parser {
         if (desc.isEmpty()) {
             throw new MortisException("The description of a todo cannot be empty.");
         }
+
+        assert !desc.isEmpty() : "todo description should be non-empty after parse";
         return desc;
     }
 
@@ -90,6 +93,9 @@ public class Parser {
             throw new MortisException("Deadline description cannot be empty.");
         }
         String by = parts[1].trim();
+
+        assert parts.length == 2 : "deadline parse returns [desc, by]";
+        assert !parts[0].isEmpty() && !parts[1].isEmpty() : "deadline fields non-empty";
         return new String[]{desc, by};
     }
 
@@ -119,6 +125,7 @@ public class Parser {
         }
         String from = second[0].trim();
         String to = second[1].trim();
+
         return new String[]{desc, from, to};
     }
 

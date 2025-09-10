@@ -30,7 +30,9 @@ public class MainWindow extends AnchorPane {
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
     }
 
-    /** Called by Main to inject the bot instance. */
+    /**
+     * Called by Main to inject the bot instance.
+     * */
     public void setMortis(Mortis mortis) {
         this.mortis = mortis;
         String welcome = "Greetings, mortal. I am Mortis, your eternal assistant.\n"

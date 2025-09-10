@@ -28,6 +28,11 @@ public class Mortis {
             loaded = new TaskList();
         }
         this.tasks = loaded;
+
+        // internal invariants
+        assert ui != null : "UI must be initialized";
+        assert storage != null : "Storage must be initialized";
+        assert tasks != null : "TaskList must be initialized";
     }
 
     public String getResponse(String rawInput) {
@@ -146,31 +151,40 @@ public class Mortis {
                     ui.showList(tasks);
                 } else if (input.startsWith("mark")) {
                     int idx = Parser.parseIndexAfter(input, "mark", tasks.size());
+                    assert idx >= 0 && idx < tasks.size() : "mark index must be valid";
                     Task t = tasks.mark(idx);
+                    assert t != null : "Marked task must not be null";
                     storage.save(tasks);
                     ui.showMarked(t);
                 } else if (input.startsWith("unmark")) {
                     int idx = Parser.parseIndexAfter(input, "unmark", tasks.size());
+                    assert idx >= 0 && idx < tasks.size() : "mark index must be valid";
                     Task t = tasks.unmark(idx);
+                    assert t != null : "Marked task must not be null";
                     storage.save(tasks);
                     ui.showUnmarked(t);
                 } else if (input.startsWith("delete")) {
                     int idx = Parser.parseIndexAfter(input, "delete", tasks.size());
+                    assert idx >= 0 && idx < tasks.size() : "delete index must be valid";
                     Task deleted = tasks.delete(idx);
+                    assert deleted != null : "Deleted task must not be null";
                     storage.save(tasks);
                     ui.showDelete(deleted, tasks.size());
                 } else if (input.startsWith("todo")) {
                     String desc = Parser.parseTodoDesc(input);
+                    assert desc != null && !desc.isBlank() : "Todo description must not be empty";
                     Task added = tasks.add(new Todo(desc));
                     storage.save(tasks);
                     ui.showAdd(added, tasks.size());
                 } else if (input.startsWith("deadline")) {
                     String[] p = Parser.parseDeadline(input);
+                    assert p.length == 2 : "Deadline must return [desc, by]";
                     Task added = tasks.add(new Deadline(p[0], p[1]));
                     storage.save(tasks);
                     ui.showAdd(added, tasks.size());
                 } else if (input.startsWith("event")) {
                     String[] p = Parser.parseEvent(input);
+                    assert p.length == 3 : "Event must return [desc, from, to]";
                     Task added = tasks.add(new Event(p[0], p[1], p[2]));
                     storage.save(tasks);
                     ui.showAdd(added, tasks.size());
