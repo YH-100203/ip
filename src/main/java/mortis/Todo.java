@@ -14,6 +14,7 @@ public class Todo extends Task {
     // tasks without any date/time attached to it
     public Todo(String description) {
         super(description);
+        assert this.description != null && !this.description.isBlank();
     }
 
     /**
@@ -23,6 +24,8 @@ public class Todo extends Task {
      */
     @Override
     public String toString() {
-        return "[T]" + super.toString();
+        String s = "[T]" + super.toString();
+        assert s.startsWith("[T]") : "Todo toString must start with [T]";
+        return s;
     }
 }

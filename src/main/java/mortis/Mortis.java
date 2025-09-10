@@ -45,34 +45,43 @@ public class Mortis {
                 return formatTaskList();
             } else if (input.startsWith("mark")) { // consider normalizing case
                 int idx = Parser.parseIndexAfter(input, "mark", tasks.size());
+                assert idx >= 0 && idx < tasks.size() : "mark index must be valid";
                 Task t = tasks.mark(idx);
+                assert t != null : "Marked task must not be null";
                 storage.save(tasks);
                 return "Ah... the task is now done. The darkness has claimed it:\n  " + t;
             } else if (input.startsWith("unmark")) { // consider normalizing case
                 int idx = Parser.parseIndexAfter(input, "unmark", tasks.size());
+                assert idx >= 0 && idx < tasks.size() : "unmark index must be valid";
                 Task t = tasks.unmark(idx);
+                assert t != null : "Unmarked task must not be null";
                 storage.save(tasks);
                 return "OK... I've pulled the task back from the abyss. It is undone now:\n  " + t; // no Markdown
             } else if (input.startsWith("delete")) {
                 int idx = Parser.parseIndexAfter(input, "delete", tasks.size());
+                assert idx >= 0 && idx < tasks.size() : "delete index must be valid";
                 Task deleted = tasks.delete(idx);
+                assert deleted != null : "deleted task must not be null";
                 storage.save(tasks);
                 return "Removed this task:\n  " + deleted + "\n"
                         + "Now you have " + tasks.size() + " task" + (tasks.size() == 1 ? "" : "s") + " in the list.";
             } else if (input.startsWith("todo")) {
                 String desc = Parser.parseTodoDesc(input);
+                assert desc != null && !desc.isBlank() : "Todo description must not be empty";
                 Task added = tasks.add(new Todo(desc));
                 storage.save(tasks);
                 return "Added this task:\n  " + added + "\n"
                         + "Now you have " + tasks.size() + " task" + (tasks.size() == 1 ? "" : "s") + " in the list.";
             } else if (input.startsWith("deadline")) {
                 String[] p = Parser.parseDeadline(input); // [desc, by]
+                assert p.length == 2 : "Deadline must return [desc, by]";
                 Task added = tasks.add(new Deadline(p[0], p[1]));
                 storage.save(tasks);
                 return "Added this task:\n  " + added + "\n"
                         + "Now you have " + tasks.size() + " task" + (tasks.size() == 1 ? "" : "s") + " in the list.";
             } else if (input.startsWith("event")) {
                 String[] p = Parser.parseEvent(input); // [desc, from, to]
+                assert p.length == 3 : "Event must return [desc, from, to]";
                 Task added = tasks.add(new Event(p[0], p[1], p[2]));
                 storage.save(tasks);
                 return "Added this task:\n  " + added + "\n"
@@ -101,19 +110,22 @@ public class Mortis {
         }
         StringBuilder sb = new StringBuilder("Mortis’ records of your tasks:\n");
         for (int i = 0; i < tasks.size(); i++) {
-            Task t = tasks.get(i);               // uses TaskList#get(int)
+            Task t = tasks.get(i); // uses TaskList#get(int)
+            assert t != null : "Task must not be null when formatting list";
             sb.append(i + 1).append(". ").append(t).append('\n');
         }
         return sb.toString().trim();
     }
 
     private String formatFindResults(String keyword) {
+        assert keyword != null && !keyword.isBlank() : "Find keyword must not be null or blank";
         String needle = keyword.toLowerCase();
 
         // Prefer a simple linear scan using TaskList#size and #get(int)
         List<Task> matches = new ArrayList<>();
         for (int i = 0; i < tasks.size(); i++) {
             Task t = tasks.get(i);
+            assert t != null : "Task must not be null when searching";
             // Use the dedicated accessor rather than toString() for matching
             if (t.getDescription().toLowerCase().contains(needle)) {
                 matches.add(t);

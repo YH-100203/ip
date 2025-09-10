@@ -21,6 +21,8 @@ public class Event extends Task {
      */
     public Event(String description, String from, String to) {
         super(description);
+        assert from != null && !from.isBlank() : "'from' must not be blank";
+        assert to != null && !to.isBlank() : "'to' must not be blank";
         try {
             LocalDate d1 = LocalDate.parse(from);
             this.from = d1.format(DateTimeFormatter.ofPattern("MMM d yyyy"));
@@ -41,6 +43,8 @@ public class Event extends Task {
      */
     @Override
     public String toString() {
-        return "[E]" + super.toString() + " (from: " + from + " to:" + to + ")";
+        String s = "[E]" + super.toString() + " (from: " + from + " to: " + to + ")";
+        assert s.startsWith("[E]") : "Event toString must start with [E]";
+        return s;
     }
 }
