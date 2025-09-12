@@ -165,5 +165,32 @@ public class Parser {
             System.out.println("Unknown or invalid command.");
         }
     }
+
+    public static EditSpec parseEdit(String input) throws MortisException {
+        // Example: "edit 2 desc: New event name /by: tomorrow /to: next week"
+        String[] parts = input.split("\\s+", 3);
+        if (parts.length < 3) {
+            throw new MortisException("Edit command must specify fields to update.");
+        }
+
+        String updates = parts[2];
+        String desc = null, by = null, from = null, to = null;
+
+        if (updates.contains("/desc")) {
+            desc = updates.split("desc:")[1].split("/")[0].trim();
+        }
+        if (updates.contains("/by")) {
+            by = updates.split("/by:")[1].split("/")[0].trim();
+        }
+        if (updates.contains("/from")) {
+            from = updates.split("/from:")[1].split("/")[0].trim();
+        }
+        if (updates.contains("/to")) {
+            to = updates.split("/to:")[1].trim();
+        }
+
+        return new EditSpec(desc, by, from, to);
+    }
+
 }
 

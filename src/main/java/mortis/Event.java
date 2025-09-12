@@ -39,6 +39,15 @@ public class Event extends Task {
         }
     }
 
+    public void setFrom(String from) {
+        this.from = from;
+    }
+
+    public void setTo(String to) {
+        this.to = to;
+    }
+
+
     /**
      * Provides a string representation of the event, including its status, description and times.
      * @return A string representing the event.

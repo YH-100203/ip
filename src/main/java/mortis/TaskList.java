@@ -73,5 +73,28 @@ public class TaskList {
         }
         return matches;
     }
+
+    public Task edit(int index, EditSpec spec) throws MortisException {
+        if (index < 0 || index >= tasks.size()) {
+            throw new MortisException("No such task at index " + (index + 1));
+        }
+
+        Task t = tasks.get(index);
+
+        if (spec.getNewDescription() != null) {
+            t.setDescription(spec.getNewDescription());
+        }
+        if (t instanceof Deadline && spec.getNewBy() != null) {
+            ((Deadline) t).setBy(spec.getNewBy());
+        }
+        if (t instanceof Event) {
+            Event e = (Event) t;
+            if (spec.getNewFrom() != null) e.setFrom(spec.getNewFrom());
+            if (spec.getNewTo() != null) e.setTo(spec.getNewTo());
+        }
+
+        return t;
+    }
+
 }
 

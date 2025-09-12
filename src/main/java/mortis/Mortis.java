@@ -14,6 +14,7 @@ public class Mortis {
     private static final String CMD_DEADLINE = "deadline";
     private static final String CMD_EVENT = "event";
     private static final String CMD_FIND = "find";
+    private static final String CMD_EDIT = "edit";
 
     private final Ui ui;
     private final Storage storage;
@@ -99,6 +100,13 @@ public class Mortis {
                     throw new MortisException("Provide a keyword for me to seek.");
                 }
                 return formatFindResults(keyword);
+            } else if (input.startsWith(CMD_EDIT)) {
+                String[] tokens = input.split("\\s+", 3);
+                int index = Integer.parseInt(tokens[1]) - 1;
+                EditSpec spec = Parser.parseEdit(input);
+                Task edited = tasks.edit(index, spec);
+                storage.save(tasks);
+                return "Edited task:\n  " + edited;
             } else {
                 throw new MortisException("I know not what you mean... try again, mortal.");
             }
