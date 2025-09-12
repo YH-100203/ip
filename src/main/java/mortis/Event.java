@@ -11,6 +11,8 @@ import java.time.format.DateTimeFormatter;
 public class Event extends Task {
     protected String from;
     protected String to;
+    private final String EVENT_ICON = "[E]";
+
 
     /**
      * Creates an Event task with a description, start time and end time.
@@ -43,8 +45,8 @@ public class Event extends Task {
      */
     @Override
     public String toString() {
-        String s = "[E]" + super.toString() + " (from: " + from + " to: " + to + ")";
-        assert s.startsWith("[E]") : "Event toString must start with [E]";
+        String s = EVENT_ICON + super.toString() + " (from: " + from + " to: " + to + ")";
+        assert s.startsWith(EVENT_ICON) : "Event toString must start with [E]";
         return s;
     }
 }

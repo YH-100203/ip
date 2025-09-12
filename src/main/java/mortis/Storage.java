@@ -14,6 +14,12 @@ import java.util.ArrayList;
  */
 public class Storage {
     private final Path path;
+    private static final String SEP_WRITE = " | ";
+    private static final String TYPE_T = "T";
+    private static final String TYPE_D = "D";
+    private static final String TYPE_E = "E";
+    private static final String DONE = "1";
+    private static final String NOT_DONE = "0";
 
     /**
      * Constructs a Storage object that handles file operations at the specified path.
@@ -21,8 +27,9 @@ public class Storage {
      * @param filePath The path to the file where task data will be stored or retrieved.
      */
     public Storage(String filePath) {
-        this.path = Paths.get(filePath);
         assert filePath != null && !filePath.isEmpty() : "storage file path set";
+        this.path = Paths.get(filePath);
+       assert this.path != null : "path must be initialized";
     }
 
     /**
@@ -53,20 +60,20 @@ public class Storage {
                     String[] parts = line.split(" \\| ");
                     if (parts.length < 3) continue; // skip malformed
                     String type = parts[0].trim();
-                    boolean done = parts[1].trim().equals("1");
+                    boolean done = parts[1].trim().equals(DONE);
                     String desc = parts[2].trim();
-                    assert type.equals("T") ||  type.equals("D") ||  type.equals("E") : "known record type";
+                    assert type.equals(TYPE_T) ||  type.equals(TYPE_D) ||  type.equals(TYPE_E) : "known record type";
 
                     Task t;
                     switch (type) {
-                        case "T":
+                    case TYPE_T:
                             t = new Todo(desc);
                             break;
-                        case "D":
+                    case TYPE_D:
                             if (parts.length < 4) continue;
                             t = new Deadline(desc, parts[3].trim());
                             break;
-                        case "E":
+                    case TYPE_E:
                             if (parts.length < 5) continue;
                             t = new Event(desc, parts[3].trim(), parts[4].trim());
                             break;
@@ -95,14 +102,15 @@ public class Storage {
             }
             try (BufferedWriter writer = Files.newBufferedWriter(path)) {
                 for (Task task : list.asList()) {
+                    String doneFlag = task.isDone ? DONE : NOT_DONE;
                     if (task instanceof Todo) {
-                        writer.write("T | " + (task.isDone ? "1" : "0") + " | " + task.getDescription());
+                        writer.write(TYPE_T + SEP_WRITE + doneFlag + SEP_WRITE + task.getDescription());
                     } else if (task instanceof Deadline) {
-                        writer.write("D | " + (task.isDone ? "1" : "0") + " | " + task.getDescription()
-                                + " | " + ((Deadline) task).by);
+                        writer.write(TYPE_D + SEP_WRITE + doneFlag + SEP_WRITE + task.getDescription()
+                                + SEP_WRITE+ ((Deadline) task).by);
                     } else if (task instanceof Event) {
-                        writer.write("E | " + (task.isDone ? "1" : "0") + " | " + task.getDescription()
-                                + " | " + ((Event) task).from + " | " + ((Event) task).to);
+                        writer.write(TYPE_E + SEP_WRITE + doneFlag + SEP_WRITE + task.getDescription()
+                                + SEP_WRITE + ((Event) task).from + SEP_WRITE + ((Event) task).to);
                     } else {
                         continue;
                     }

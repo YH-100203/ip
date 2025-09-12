@@ -7,6 +7,13 @@ import java.util.List;
  * Responsible for initializing the storage, task list, and UI, and running the application loop.
  */
 public class Mortis {
+    private static final String CMD_MARK = "mark";
+    private static final String CMD_UNMARK = "unmark";
+    private static final String CMD_DELETE = "delete";
+    private static final String CMD_TODO = "todo";
+    private static final String CMD_DEADLINE = "deadline";
+    private static final String CMD_EVENT = "event";
+    private static final String CMD_FIND = "find";
 
     private final Ui ui;
     private final Storage storage;
@@ -43,50 +50,50 @@ public class Mortis {
                 return "Farewell. Mortis slumbers...";
             } else if (Parser.isList(input)) {
                 return formatTaskList();
-            } else if (input.startsWith("mark")) { // consider normalizing case
-                int idx = Parser.parseIndexAfter(input, "mark", tasks.size());
+            } else if (input.startsWith(CMD_MARK)) { // consider normalizing case
+                int idx = Parser.parseIndexAfter(input, CMD_MARK, tasks.size());
                 assert idx >= 0 && idx < tasks.size() : "mark index must be valid";
                 Task t = tasks.mark(idx);
                 assert t != null : "Marked task must not be null";
                 storage.save(tasks);
                 return "Ah... the task is now done. The darkness has claimed it:\n  " + t;
-            } else if (input.startsWith("unmark")) { // consider normalizing case
-                int idx = Parser.parseIndexAfter(input, "unmark", tasks.size());
+            } else if (input.startsWith(CMD_UNMARK)) { // consider normalizing case
+                int idx = Parser.parseIndexAfter(input, CMD_UNMARK, tasks.size());
                 assert idx >= 0 && idx < tasks.size() : "unmark index must be valid";
                 Task t = tasks.unmark(idx);
                 assert t != null : "Unmarked task must not be null";
                 storage.save(tasks);
                 return "OK... I've pulled the task back from the abyss. It is undone now:\n  " + t; // no Markdown
-            } else if (input.startsWith("delete")) {
-                int idx = Parser.parseIndexAfter(input, "delete", tasks.size());
+            } else if (input.startsWith(CMD_DELETE)) {
+                int idx = Parser.parseIndexAfter(input, CMD_DELETE, tasks.size());
                 assert idx >= 0 && idx < tasks.size() : "delete index must be valid";
                 Task deleted = tasks.delete(idx);
                 assert deleted != null : "deleted task must not be null";
                 storage.save(tasks);
                 return "Removed this task:\n  " + deleted + "\n"
                         + "Now you have " + tasks.size() + " task" + (tasks.size() == 1 ? "" : "s") + " in the list.";
-            } else if (input.startsWith("todo")) {
+            } else if (input.startsWith(CMD_TODO)) {
                 String desc = Parser.parseTodoDesc(input);
                 assert desc != null && !desc.isBlank() : "Todo description must not be empty";
                 Task added = tasks.add(new Todo(desc));
                 storage.save(tasks);
                 return "Added this task:\n  " + added + "\n"
                         + "Now you have " + tasks.size() + " task" + (tasks.size() == 1 ? "" : "s") + " in the list.";
-            } else if (input.startsWith("deadline")) {
+            } else if (input.startsWith(CMD_DEADLINE)) {
                 String[] p = Parser.parseDeadline(input); // [desc, by]
                 assert p.length == 2 : "Deadline must return [desc, by]";
                 Task added = tasks.add(new Deadline(p[0], p[1]));
                 storage.save(tasks);
                 return "Added this task:\n  " + added + "\n"
                         + "Now you have " + tasks.size() + " task" + (tasks.size() == 1 ? "" : "s") + " in the list.";
-            } else if (input.startsWith("event")) {
+            } else if (input.startsWith(CMD_EVENT)) {
                 String[] p = Parser.parseEvent(input); // [desc, from, to]
                 assert p.length == 3 : "Event must return [desc, from, to]";
                 Task added = tasks.add(new Event(p[0], p[1], p[2]));
                 storage.save(tasks);
                 return "Added this task:\n  " + added + "\n"
                         + "Now you have " + tasks.size() + " task" + (tasks.size() == 1 ? "" : "s") + " in the list.";
-            } else if (input.startsWith("find")) {
+            } else if (input.startsWith(CMD_FIND)) {
                 String keyword = input.length() >= 5 ? input.substring(5).trim() : "";
                 if (keyword.isEmpty()) {
                     throw new MortisException("Provide a keyword for me to seek.");
@@ -161,46 +168,46 @@ public class Mortis {
                     exit = true;
                 } else if (Parser.isList(input)) {
                     ui.showList(tasks);
-                } else if (input.startsWith("mark")) {
-                    int idx = Parser.parseIndexAfter(input, "mark", tasks.size());
+                } else if (input.startsWith(CMD_MARK)) {
+                    int idx = Parser.parseIndexAfter(input, CMD_MARK, tasks.size());
                     assert idx >= 0 && idx < tasks.size() : "mark index must be valid";
                     Task t = tasks.mark(idx);
                     assert t != null : "Marked task must not be null";
                     storage.save(tasks);
                     ui.showMarked(t);
-                } else if (input.startsWith("unmark")) {
-                    int idx = Parser.parseIndexAfter(input, "unmark", tasks.size());
+                } else if (input.startsWith(CMD_UNMARK)) {
+                    int idx = Parser.parseIndexAfter(input, CMD_UNMARK, tasks.size());
                     assert idx >= 0 && idx < tasks.size() : "mark index must be valid";
                     Task t = tasks.unmark(idx);
                     assert t != null : "Marked task must not be null";
                     storage.save(tasks);
                     ui.showUnmarked(t);
-                } else if (input.startsWith("delete")) {
-                    int idx = Parser.parseIndexAfter(input, "delete", tasks.size());
+                } else if (input.startsWith(CMD_DELETE)) {
+                    int idx = Parser.parseIndexAfter(input, CMD_DELETE, tasks.size());
                     assert idx >= 0 && idx < tasks.size() : "delete index must be valid";
                     Task deleted = tasks.delete(idx);
                     assert deleted != null : "Deleted task must not be null";
                     storage.save(tasks);
                     ui.showDelete(deleted, tasks.size());
-                } else if (input.startsWith("todo")) {
+                } else if (input.startsWith(CMD_TODO)) {
                     String desc = Parser.parseTodoDesc(input);
                     assert desc != null && !desc.isBlank() : "Todo description must not be empty";
                     Task added = tasks.add(new Todo(desc));
                     storage.save(tasks);
                     ui.showAdd(added, tasks.size());
-                } else if (input.startsWith("deadline")) {
+                } else if (input.startsWith(CMD_DEADLINE)) {
                     String[] p = Parser.parseDeadline(input);
                     assert p.length == 2 : "Deadline must return [desc, by]";
                     Task added = tasks.add(new Deadline(p[0], p[1]));
                     storage.save(tasks);
                     ui.showAdd(added, tasks.size());
-                } else if (input.startsWith("event")) {
+                } else if (input.startsWith(CMD_EVENT)) {
                     String[] p = Parser.parseEvent(input);
                     assert p.length == 3 : "Event must return [desc, from, to]";
                     Task added = tasks.add(new Event(p[0], p[1], p[2]));
                     storage.save(tasks);
                     ui.showAdd(added, tasks.size());
-                } else if (input.startsWith("find")) {
+                } else if (input.startsWith(CMD_FIND)) {
                     String keyword = input.substring(5).trim();
                     if (!keyword.isEmpty()) {
                         Parser.parseFind("find " + keyword, tasks, ui);

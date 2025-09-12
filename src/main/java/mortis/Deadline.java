@@ -9,6 +9,7 @@ import java.time.format.DateTimeFormatter;
  */
 public class Deadline extends Task {
     protected String by;
+    private static final String DEADLINE_ICON = "[D]";
 
     /**
      * Creates a Deadline task with a description and due date.
@@ -45,6 +46,6 @@ public class Deadline extends Task {
      */
     @Override
     public String toString() {
-        return "[D]" + super.toString() + " (by: " + getFormattedDate() + ")";
+        return DEADLINE_ICON + super.toString() + " (by: " + getFormattedDate() + ")";
     }
 }

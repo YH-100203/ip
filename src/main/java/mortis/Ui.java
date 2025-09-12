@@ -10,22 +10,26 @@ import java.util.Scanner;
 
 public class Ui {
     private final Scanner sc = new Scanner(System.in);
+    private static final String INDENTED_LINE =
+            "    ____________________________________________________________";
+    private static final String NORMAL_LINE =
+            "____________________________________________________________";
 
     /**
      * Displays a welcome message to the user.
      */
     public void showWelcome() {
-        System.out.println("____________________________________________________________");
+        System.out.println(NORMAL_LINE);
         System.out.println(" Greetings, mortal. I am Mortis, your eternal assistant.");
         System.out.println(" What dark secret may I help you uncover today?");
-        System.out.println("____________________________________________________________");
+        System.out.println(NORMAL_LINE);
     }
 
     /**
      * Displays a line separator.
      */
     public void showLine() {
-        System.out.println("    ____________________________________________________________");
+        System.out.println(INDENTED_LINE);
     }
 
 
@@ -48,6 +52,7 @@ public class Ui {
     }
 
     public void showList(TaskList tasks) {
+        assert tasks != null : "tasks must not be null";
         showLine();
         if (tasks.isEmpty()) {
             System.out.println("     Mortis has not yet received any tasks... *sadness*");
