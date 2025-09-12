@@ -177,16 +177,16 @@ public class Parser {
         String desc = null, by = null, from = null, to = null;
 
         if (updates.contains("/desc")) {
-            desc = updates.split("desc:")[1].split("/")[0].trim();
+            desc = updates.split("desc")[1].split("/")[0].trim();
         }
         if (updates.contains("/by")) {
-            by = updates.split("/by:")[1].split("/")[0].trim();
+            by = updates.split("/by")[1].split("/")[0].trim();
         }
         if (updates.contains("/from")) {
-            from = updates.split("/from:")[1].split("/")[0].trim();
+            from = updates.split("/from")[1].split("/")[0].trim();
         }
         if (updates.contains("/to")) {
-            to = updates.split("/to:")[1].trim();
+            to = updates.split("/to")[1].trim();
         }
 
         return new EditSpec(desc, by, from, to);
