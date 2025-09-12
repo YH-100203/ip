@@ -23,6 +23,12 @@ public class Deadline extends Task {
         this.by = by;
     }
 
+    public void setBy(String by) {
+        this.by = by;
+    }
+
+
+
     /**
      * Converts the due date stored in the 'by' field into a formatted string.
      * If the date is valid and can be parsed, it returns the date in the format "MMM d yyyy" (e.g., "Oct 15 2019").

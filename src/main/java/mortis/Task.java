@@ -62,6 +62,12 @@ public class Task {
         return description;
     }
 
+    public void setDescription(String newDesc) {
+        if (newDesc != null && !newDesc.isBlank()) {
+            this.description = newDesc;
+        }
+    }
+
 
     /**
      * Provides a string representation of the task, including its status and description.
