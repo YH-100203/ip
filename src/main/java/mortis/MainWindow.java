@@ -28,9 +28,15 @@ public class MainWindow extends AnchorPane {
     @FXML
     public void initialize() {
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
+        assert scrollPane != null : "ScrollPane must be injected by FXML";
+        assert dialogContainer != null : "Dialog container must be injected";
+        assert userInput != null : "User input field must be injected";
+        assert sendButton != null : "Send button must be injected";
     }
 
-    /** Called by Main to inject the bot instance. */
+    /**
+     * Called by Main to inject the bot instance.
+     * */
     public void setMortis(Mortis mortis) {
         this.mortis = mortis;
         String welcome = "Greetings, mortal. I am Mortis, your eternal assistant.\n"

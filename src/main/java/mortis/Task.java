@@ -16,7 +16,11 @@ public class Task {
      * @param description The description of the task.
      */
     public Task(String description) {
+        assert description != null : "Task description must not be null";
+        assert !description.isBlank() : "Task description must not be blank";
         this.description = description;
+        // class invariant after construction
+        assert this.description != null && !this.description.isBlank();
         this.isDone = false;
     }
 
@@ -24,14 +28,20 @@ public class Task {
      * Marks the task as done.
      */
     public void markAsDone() {
+        boolean prev = isDone;
         isDone = true;
+        assert isDone : "Task should be marked done after markAsDone()";
+        assert prev || isDone; // sanity: state moved towards done
     }
 
     /**
      * Unmarks the task, setting its status to undone.
      */
     public void unmark() {
+        boolean prev = isDone;
         isDone = false;
+        assert !isDone : "Task should be not done after unmark()";
+        assert !prev || !isDone; // sanity: state moved towards not-done
     }
 
     /**
@@ -50,6 +60,7 @@ public class Task {
      * @return The description of the task.
      */
     public String getDescription() {
+        assert description != null && !description.isBlank() : "description invariant";
         return description;
     }
 
@@ -60,7 +71,9 @@ public class Task {
      * @return A string representing the task in the format [status] description.
      */
     public String toString() {
-        return "[" + getStatusIcon() + "] " + description;
+        String s = "[" + getStatusIcon() + "] " + description;
+        assert s != null && !s.isBlank() : "toString must return non-empty";
+        return s;
     }
 
 

@@ -22,6 +22,7 @@ public class Storage {
      */
     public Storage(String filePath) {
         this.path = Paths.get(filePath);
+        assert filePath != null && !filePath.isEmpty() : "storage file path set";
     }
 
     /**
@@ -36,6 +37,7 @@ public class Storage {
         try {
             if (path.getParent() != null) {
                 Files.createDirectories(path.getParent());
+                assert Files.exists(path.getParent()) : "data directory exists";
             }
             if (!Files.exists(path)) {
                 Files.createFile(path);
@@ -53,6 +55,7 @@ public class Storage {
                     String type = parts[0].trim();
                     boolean done = parts[1].trim().equals("1");
                     String desc = parts[2].trim();
+                    assert type.equals("T") ||  type.equals("D") ||  type.equals("E") : "known record type";
 
                     Task t;
                     switch (type) {
