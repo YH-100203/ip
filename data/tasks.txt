@@ -1,3 +1,4 @@
-D | 1 | Be happy | Monday
-D | 0 | do 2103 | Monday
-E | 0 | Project | today | Friday
+T | 0 | Read Oil 101
+D | 0 | Do CS2105 Assignment | 2025-10-02
+E | 1 | Interview | Mon 2pm | 4pm
+D | 1 | Reflection | Sunday
