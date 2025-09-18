@@ -1,4 +1,5 @@
 T | 0 | Read Oil 101
 D | 0 | Do CS2105 Assignment | 2025-10-02
 E | 1 | Interview | Mon 2pm | 4pm
-D | 1 | Reflection | Sunday
+D | 0 | Reflection | Sunday
+D | 1 | win | 2025-09-22
